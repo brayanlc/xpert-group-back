@@ -1,11 +1,10 @@
-
-import { register, login } from './cat-user-controller';
+import { register, login } from './user-controller';
 import { registerUser, loginUser } from '../services/cat-user-service';
 import { Request, Response } from 'express';
 
 jest.mock('../services/cat-user-service');
 
-describe('CatUserController', () => {
+describe('UserController', () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let statusMock: jest.Mock;
@@ -34,7 +33,7 @@ describe('CatUserController', () => {
 
             await register(req as Request, res as Response);
 
-            expect(registerUser).toHaveBeenCalledWith('testuser', 'testpass');
+            expect(registerUser).toHaveBeenCalledWith(req.body);
             expect(statusMock).toHaveBeenCalledWith(201);
             expect(jsonMock).toHaveBeenCalledWith(user);
         });
