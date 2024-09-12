@@ -1,10 +1,10 @@
+import { register, login } from '../controllers/user-controller';
 import { registerUser, loginUser } from './cat-user-service';
 import { Request, Response } from 'express';
-import { login, register } from '../controllers/cat-user-controller';
 
-jest.mock('../services/cat-user-service');
+jest.mock('./cat-user-service');
 
-describe('CatUserController', () => {
+describe('CatUserService', () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let statusMock: jest.Mock;
@@ -33,7 +33,7 @@ describe('CatUserController', () => {
 
       await register(req as Request, res as Response);
 
-      expect(registerUser).toHaveBeenCalledWith('testuser', 'testpass');
+      expect(registerUser).toHaveBeenCalledWith(req.body);
       expect(statusMock).toHaveBeenCalledWith(201);
       expect(jsonMock).toHaveBeenCalledWith(user);
     });
@@ -64,9 +64,7 @@ describe('CatUserController', () => {
 
     it('should return 401 status on invalid credentials', async () => {
       req.body = { username: 'testuser', password: 'testpass' };
-      (loginUser as jest.Mock).mockRejectedValue(
-        new Error('Invalid credentials'),
-      );
+      (loginUser as jest.Mock).mockRejectedValue(new Error('Invalid credentials'));
 
       await login(req as Request, res as Response);
 

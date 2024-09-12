@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login } from '../controllers/cat-user-controller';
+import { register, login } from '../controllers/user-controller';
 
 const router = Router();
 
